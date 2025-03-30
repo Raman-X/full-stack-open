@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Statistics from "./Statistics.jsx";
 
 const App = () => {
@@ -31,7 +31,13 @@ const App = () => {
       >
         bad
       </button>
-      <Statistics good={good} bad={bad} neutral={neutral} />
+      <h1>statistics</h1>
+
+      {good || bad || neutral ? (
+        <Statistics good={good} bad={bad} neutral={neutral} />
+      ) : (
+        <p>No feedback given</p>
+      )}
     </div>
   );
 };

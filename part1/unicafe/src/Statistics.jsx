@@ -4,7 +4,6 @@ const Statistics = ({ good, bad, neutral }) => {
   let total = good + neutral + bad;
   return (
     <>
-      <h1>statistics</h1>
       <p>good {good}</p>
       <p>neutral {neutral}</p>
       <p>bad {bad}</p>
