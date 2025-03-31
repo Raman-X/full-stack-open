@@ -1,4 +1,7 @@
 import { useState } from "react";
+import Filter from "./components/Filter.jsx";
+import PersonForm from "./components/PersonForm.jsx";
+import Persons from "./components/Persons.jsx";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -10,6 +13,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [newName, setNewName] = useState("");
   const [filterName, setFilterName] = useState("");
+
   function handleSubmit(event) {
     event.preventDefault();
     const foundName = persons.find(
@@ -28,48 +32,25 @@ const App = () => {
       );
     }
     setNewName("");
+    setNewNumber("");
   }
-
+  console.log(persons);
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with{" "}
-        <input
-          type="text"
-          value={filterName}
-          onChange={(e) => setFilterName(e.target.value)}
-        />
-      </div>
+      <Filter filterName={filterName} setFilterName={setFilterName} />
+
       <h2>Add a new</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          name:{" "}
-          <input value={newName} onChange={(e) => setNewName(e.target.value)} />
-        </div>
-        <div>
-          number:{" "}
-          <input
-            value={newNumber}
-            onChange={(e) => setNewNumber(e.target.value)}
-          />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <PersonForm
+        handleSubmit={handleSubmit}
+        newName={newName}
+        setNewName={setNewName}
+        newNumber={newNumber}
+        setNewNumber={setNewNumber}
+      />
+
       <h2>Numbers</h2>
-      <ul>
-        {persons.map((person, index) => {
-          if (person.name.toLowerCase().includes(filterName.toLowerCase())) {
-            return (
-              <li key={person.name}>
-                {person.name} {person.number}
-              </li>
-            );
-          }
-        })}
-      </ul>
+      <Persons persons={persons} filterName={filterName} />
     </div>
   );
 };
