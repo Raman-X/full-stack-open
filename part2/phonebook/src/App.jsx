@@ -5,7 +5,15 @@ const App = () => {
   const [newName, setNewName] = useState("");
   function handleSubmit(event) {
     event.preventDefault();
-    setPersons(persons.concat({ name: newName }));
+    const foundName = persons.find(
+      (person) => person.name.toLowerCase() === newName.toLowerCase(),
+    );
+
+    if (foundName) {
+      alert(`${foundName.name} already exists!`);
+    } else {
+      setPersons(persons.concat({ name: newName }));
+    }
     setNewName("");
   }
 
