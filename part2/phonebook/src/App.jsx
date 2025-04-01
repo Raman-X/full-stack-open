@@ -27,7 +27,7 @@ const App = () => {
       const newPerson = {
         name: newName,
         number: newNumber,
-        id: Number(persons[persons.length - 1].id) + 1,
+        id: Date.now().toString(),
       };
 
       setPersons(persons.concat(newPerson));
@@ -53,7 +53,11 @@ const App = () => {
       />
 
       <h2>Numbers</h2>
-      <Persons persons={persons} filterName={filterName} />
+      <Persons
+        persons={persons}
+        filterName={filterName}
+        setPersons={setPersons}
+      />
     </div>
   );
 };

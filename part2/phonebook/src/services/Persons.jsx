@@ -10,4 +10,10 @@ const addPerson = (person) => {
   return axios.post(URL, person).then((response) => response.data);
 };
 
-export default { getAll, addPerson };
+const deletePerson = (id, setPersons) => {
+  return axios.delete(`${URL}/${id}`).then((response) => {
+    getAll().then((data) => setPersons(data));
+  });
+};
+
+export default { getAll, addPerson, deletePerson };
