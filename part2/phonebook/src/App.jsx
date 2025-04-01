@@ -12,6 +12,7 @@ const App = () => {
   const [filterName, setFilterName] = useState("");
   const [message, setMessage] = useState("");
   const [updateMessage, setUpdateMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   function getData() {
     return services.getAll().then((data) => setPersons(data));
@@ -38,14 +39,25 @@ const App = () => {
         )
       ) {
         // update
-        services.updatePerson(foundName.id, newPerson).then((response) => {
-          console.log(response);
-          getData();
-          setUpdateMessage("message updated successfully.");
-          setTimeout(() => {
-            setUpdateMessage("");
-          }, 3000);
-        });
+        services
+          .updatePerson(foundName.id, newPerson)
+          .then((response) => {
+            console.log(response);
+            getData();
+            setUpdateMessage("message updated successfully.");
+            setTimeout(() => {
+              setUpdateMessage("");
+            }, 3000);
+          })
+          .catch((error) => {
+            console.log(error);
+            setErrorMessage(
+              `information of ${foundName.name} has already been deleted by server`,
+            );
+            setTimeout(() => {
+              setErrorMessage("");
+            }, 3000);
+          });
       }
     } else {
       setPersons(persons.concat(newPerson));
@@ -100,6 +112,21 @@ const App = () => {
         }
       >
         {updateMessage}
+      </div>
+      <div
+        style={
+          errorMessage
+            ? {
+                padding: "5px",
+                border: "3px solid red",
+                marginBottom: "20px",
+                color: "red",
+                fontSize: "2rem",
+              }
+            : {}
+        }
+      >
+        {errorMessage}
       </div>
       <Filter filterName={filterName} setFilterName={setFilterName} />
 
