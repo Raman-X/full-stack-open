@@ -25,13 +25,19 @@ const App = () => {
     if (foundName) {
       alert(`${foundName.name} already exists!`);
     } else {
-      setPersons(
-        persons.concat({
-          name: newName,
-          number: newNumber,
-          id: persons[persons.length - 1].id + 1,
-        }),
-      );
+      const newPerson = {
+        name: newName,
+        number: newNumber,
+        id: Number(persons[persons.length - 1].id) + 1,
+      };
+
+      setPersons(persons.concat(newPerson));
+
+      axios
+        .post("http://localhost:3001/persons", newPerson)
+        .then((response) => {
+          console.log("response", response.data);
+        });
     }
     setNewName("");
     setNewNumber("");
