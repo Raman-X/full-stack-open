@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import services from "../services/Persons.jsx";
 
-const Persons = ({ persons, filterName, setPersons }) => {
+const Persons = ({ persons, filterName, setPersons, handleDelete }) => {
   return (
     <ul>
       {persons.map((person, index) => {
@@ -12,13 +12,7 @@ const Persons = ({ persons, filterName, setPersons }) => {
               {person.name} {person.number}{" "}
               <button
                 onClick={() => {
-                  if (
-                    window.confirm(
-                      "Are you sure you want to delete this person?",
-                    )
-                  ) {
-                    services.deletePerson(person.id, setPersons);
-                  }
+                  handleDelete(person.id);
                 }}
               >
                 delete

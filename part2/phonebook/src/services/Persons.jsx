@@ -12,7 +12,7 @@ const addPerson = (person) => {
 
 const deletePerson = (id, setPersons) => {
   return axios.delete(`${URL}/${id}`).then((response) => {
-    getAll().then((data) => setPersons(data));
+    return response.data;
   });
 };
 

@@ -11,8 +11,12 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [filterName, setFilterName] = useState("");
 
+  function getData() {
+    return services.getAll().then((data) => setPersons(data));
+  }
+
   useEffect(() => {
-    services.getAll().then((data) => setPersons(data));
+    getData();
   }, []);
 
   function handleSubmit(event) {
@@ -20,16 +24,25 @@ const App = () => {
     const foundName = persons.find(
       (person) => person.name.toLowerCase() === newName.toLowerCase(),
     );
-
+    const newPerson = {
+      id: Date.now().toString(),
+      name: newName,
+      number: newNumber,
+    };
     if (foundName) {
-      alert(`${foundName.name} already exists!`);
+      if (
+        window.confirm(
+          `${foundName.name} already exists! would you like to replace the old number with the new one`,
+        )
+      ) {
+        axios
+          .put(`http://localhost:3001/persons/${foundName.id}`, newPerson)
+          .then((response) => {
+            console.log(response.data);
+            getData();
+          });
+      }
     } else {
-      const newPerson = {
-        name: newName,
-        number: newNumber,
-        id: Date.now().toString(),
-      };
-
       setPersons(persons.concat(newPerson));
 
       services.addPerson(newPerson).then((data) => console.log(data));
@@ -38,6 +51,14 @@ const App = () => {
     setNewNumber("");
   }
 
+  function handleDelete(id) {
+    if (window.confirm("Are you sure you want to delete this person?")) {
+      services.deletePerson(id, setPersons).then((data) => {
+        console.log(data);
+        getData(); //update state after deletion
+      });
+    }
+  }
   return (
     <div>
       <h2>Phonebook</h2>
@@ -57,6 +78,7 @@ const App = () => {
         persons={persons}
         filterName={filterName}
         setPersons={setPersons}
+        handleDelete={handleDelete}
       />
     </div>
   );
