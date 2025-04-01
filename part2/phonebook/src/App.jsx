@@ -10,6 +10,8 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [newName, setNewName] = useState("");
   const [filterName, setFilterName] = useState("");
+  const [message, setMessage] = useState("");
+  const [updateMessage, setUpdateMessage] = useState("");
 
   function getData() {
     return services.getAll().then((data) => setPersons(data));
@@ -35,17 +37,24 @@ const App = () => {
           `${foundName.name} already exists! would you like to replace the old number with the new one`,
         )
       ) {
-        axios
-          .put(`http://localhost:3001/persons/${foundName.id}`, newPerson)
-          .then((response) => {
-            console.log(response.data);
-            getData();
-          });
+        // update
+        services.updatePerson(foundName.id, newPerson).then((response) => {
+          console.log(response);
+          getData();
+          setUpdateMessage("message updated successfully.");
+          setTimeout(() => {
+            setUpdateMessage("");
+          }, 3000);
+        });
       }
     } else {
       setPersons(persons.concat(newPerson));
-
       services.addPerson(newPerson).then((data) => console.log(data));
+
+      setMessage("person added successfully!");
+      setTimeout(() => {
+        setMessage("");
+      }, 5000);
     }
     setNewName("");
     setNewNumber("");
@@ -62,6 +71,36 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <div
+        style={
+          message
+            ? {
+                padding: "5px",
+                border: "3px solid green",
+                marginBottom: "20px",
+                color: "green",
+                fontSize: "2rem",
+              }
+            : {}
+        }
+      >
+        {message}
+      </div>
+      <div
+        style={
+          updateMessage
+            ? {
+                padding: "5px",
+                border: "3px solid yellow",
+                marginBottom: "20px",
+                color: "yellow",
+                fontSize: "2rem",
+              }
+            : {}
+        }
+      >
+        {updateMessage}
+      </div>
       <Filter filterName={filterName} setFilterName={setFilterName} />
 
       <h2>Add a new</h2>
