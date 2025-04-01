@@ -10,7 +10,7 @@ const addPerson = (person) => {
   return axios.post(URL, person).then((response) => response.data);
 };
 
-const deletePerson = (id, setPersons) => {
+const deletePerson = (id) => {
   return axios.delete(`${URL}/${id}`).then((response) => {
     return response.data;
   });

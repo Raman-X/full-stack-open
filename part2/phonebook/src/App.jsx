@@ -53,7 +53,7 @@ const App = () => {
 
   function handleDelete(id) {
     if (window.confirm("Are you sure you want to delete this person?")) {
-      services.deletePerson(id, setPersons).then((data) => {
+      services.deletePerson(id).then((data) => {
         console.log(data);
         getData(); //update state after deletion
       });
